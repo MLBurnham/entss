@@ -21,7 +21,7 @@ INSTALL_REQUIRES = [
     "regex >= 2022.3.15",
     "cmdstanpy >= 1.1.0",
     "transformers >= 4.0.0",
-    "torch >= 1.10.2"
+    "torch >= 2.0.0"
 ]
 
 # Setup configuration

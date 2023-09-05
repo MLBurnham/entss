@@ -40,7 +40,7 @@ class Cleaner:
               textcol='text',
               scrub = True,
               split = True,
-              synonyms = True,
+              synonyms = False,
               keywords = True):
         """
         Cleans and preprocesses input text data.

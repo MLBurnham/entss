@@ -47,7 +47,7 @@ class Scaler:
                  left_init_cols = None,
                  right_init_cols = None,
                  n_warmup = 1000,
-                 n_sample = 5000,
+                 n_sample = 2000,
                  output_dir = 'stan_data.json',
                  summary = True,
                  **kwargs):
