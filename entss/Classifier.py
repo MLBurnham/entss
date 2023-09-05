@@ -152,5 +152,7 @@ class Classifier:
         tempdf = pd.concat([tempdf, label_df_concat], axis=1).drop([f"{target}_lab" for target in targets], axis=1)
 
         if aggregate_on is not None:
+            count = tempdf.groupby(aggregate_on).size().reset_index(name='Count')['Count']
             tempdf = tempdf.drop(textcol, axis = 1).groupby(aggregate_on).sum().reset_index()
+            tempdf['doc_num'] = count
         return tempdf
