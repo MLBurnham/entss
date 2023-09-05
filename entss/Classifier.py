@@ -132,6 +132,10 @@ class Classifier:
 
             # Add results to dataframe
             if isinstance(data, pd.DataFrame):
+                # Need to cast the column as an object first to avoid a warning
+                tempdf[f"{target}_lab"] = np.NaN
+                tempdf[f"{target}_lab"] = tempdf[f"{target}_lab"].astype('object')         
+                
                 tempdf.loc[target_rows, f"{target}_lab"] = [label['labels'][0] for label in res]
             else:
                 tempdf[f"{target}_lab"] = [label['labels'][0] for label in res]
