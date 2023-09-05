@@ -3,7 +3,8 @@
 [![License](https://img.shields.io/badge/license-GNU%20GPLv3-orange.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 [![Twitter](https://img.shields.io/badge/twitter-%40ML_Burn-blue.svg)](https://twitter.com/ML_Burn)
 
-# Entss: Entailment Classification and Semantic Scaling ![ents2](https://github.com/MLBurnham/entss/assets/41241150/4df264de-89f7-4528-8eed-c811a8f69cb6)
+# Entss: Entailment Classification and Semantic Scaling 
+![ents2](https://github.com/MLBurnham/entss/assets/41241150/4df264de-89f7-4528-8eed-c811a8f69cb6)
 
 
 
