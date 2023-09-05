@@ -12,7 +12,7 @@ Entss is a library for inferring political beliefs from text using transformers 
 
 Under the hood, Entss uses zero-shot stance detection via entailment classification to label documents based on the beliefs they express, and estimates the ideology of document authors with semantic scaling. 
 
-Entss is a modular package designed around three classes, the Cleaner(), Classifier(), and Modeler(). Sensible defaults are provided for each class to enable fast inference, but users can also pass their own cleaning functions, models, etc. to the classes.
+Entss is a modular package designed around three classes, the Cleaner(), Classifier(), and Scaler(). Sensible defaults are provided for each class to enable fast inference, but users can also pass their own cleaning functions, models, etc. to the classes.
 
 ## Installation
 Entss relies on PyTorch to label documents and CmdStan to estimate ideal points. It's highly recommended that you set these up in a conda environment to use Entss. If you want to use the Scaler() you will need an install of CmdStan. The [installation instructions for CmdStanPy](https://mc-stan.org/cmdstanpy/installation.html) recommend installing CmdStanPy with Conda, which will automatically install CmdStan. For example, the following command will create a new environment called 'entss' with CmdStanPy and CmdStan installed. 
@@ -44,8 +44,8 @@ mturk = en.Classifier(targets = keywords, dimensions = dimensions)
 df = mturk.label(df, aggregate_on = 'Last Name')
 
 # Model
-banks = en.Scaler()
-fit, summary = banks.stan_fit(df, targets = targets, dimensions = ['supports', 'opposes'], left_init_cols = 'trump_opposes', right_init_cols = 'trump_supports', summary = True)
+lizardy = en.Scaler()
+fit, summary = lizardy.stan_fit(df, targets = targets, dimensions = ['supports', 'opposes'], left_init_cols = 'trump_opposes', right_init_cols = 'trump_supports', summary = True)
 ```
 
 ## Getting Started
@@ -332,11 +332,11 @@ df.head()
 ### Scaling
 Entss uses a Bayesian IRT model to estimate ideology based on how many of the total documents generated expressed a particular belief. When we instantiate the model we can specify the number of chains, how many parallel chains to run, and whether we want to run a multi-threaded model. Here we will just use the defaults.
 
-You can pass a dataframe to the modeler, or if you have data already formatted for Stan you can pass that as a dictionary. If passing a dataframe you need to specify columns to calculate the initial values. These are columns that you expect people on the left end of the scale to have higher values for (left_init_cols) and columns you expect people on the right end of the scale to have higher values for (right_init_cols). 
+You can pass a dataframe to the Scaler(), or if you have data already formatted for Stan you can pass that as a dictionary. If passing a dataframe you need to specify columns to calculate the initial values. These are columns that you expect people on the left end of the scale to have higher values for (left_init_cols) and columns you expect people on the right end of the scale to have higher values for (right_init_cols). 
 ```python
-banks = en.Scaler()
+lizardy = en.Scaler()
 
-fit, summary = banks.stan_fit(df, targets = targets, dimensions = ['supports', 'opposes'], 
+fit, summary = lizardy.stan_fit(df, targets = targets, dimensions = ['supports', 'opposes'], 
                               left_init_cols = 'trump_opposes', right_init_cols = 'trump_supports', 
                               summary = True)
 ```
