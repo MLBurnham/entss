@@ -1,1 +1,8 @@
-/.ipynb_checkpoints
+.ipynb_checkpoints/
+*.ipynb
+test.py
+
+# Distribution / packaging
+build/
+dist/
+entss.egg-info/

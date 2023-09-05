@@ -3,7 +3,7 @@ import pysbd
 import pandas as pd
 import numpy as np
 import pkg_resources
-from cmdstanpy import write_stan_json
+from cmdstanpy import write_stan_json, CmdStanModel
 
 def scrub_text(docs, textcol = 'text'):
     """
@@ -346,3 +346,7 @@ def generate_inits(data, left_cols, right_cols, alphas = None):
 def load_newsletters():
     stream = pkg_resources.resource_stream(__name__, 'data/letters_testset.csv')
     return pd.read_csv(stream)
+
+def load_stan_model(model_type):
+    model_file_path = pkg_resources.resource_filename(__name__, f'models/model_{model_type}.stan')
+    return CmdStanModel(stan_file=model_file_path)

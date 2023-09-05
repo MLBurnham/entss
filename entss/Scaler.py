@@ -32,11 +32,10 @@ class Scaler:
         self.n_threads = n_threads
         self.model_type = model_type
 
-        model_file = 'entailment/model_serial.stan' if model_type == 'serial' else 'entailment/model_multithreaded.stan'
         if self.model_type == 'multi' and n_threads == 1:
-            warnings.warn("Using the multithreaded model with n_threads set to 1. Either increase the number of threads per chain or use the serial model.", UserWarning)
+             warnings.warn("Using the multithreaded model with n_threads set to 1. Either increase the number of threads per chain or use the serial model.", UserWarning)
         # Initialize the model        
-        self.model = CmdStanModel(stan_file = model_file)
+        self.model = utils.load_stan_model(model_type)
 
 
     def stan_fit(self,

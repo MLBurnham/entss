@@ -5,7 +5,7 @@
 
 # Entss: Entailment Classification and Semantic Scaling
  
-Entss is a library for inferring political beliefs from text using transformers and Bayesian IRT. It provides tools to simplify the process of cleaning, labeling, and modeling your data so that you don't have to be an expert in NLP or Bayesian statistics, and can save yourself a lot of programming even if you are!
+Entss is a library for inferring political beliefs from text using transformers and Bayesian IRT. It provides tools to simplify the process of cleaning, labeling, and modeling your data so that you don't have to be an expert in NLP or Bayesian statistics, and can save you a lot of programming even if you are!
 
 Under the hood, Entss uses zero-shot stance detection via entailment classification to label documents based on the beliefs they express, and estimates the ideology of document authors with semantic scaling. 
 
