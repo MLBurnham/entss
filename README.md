@@ -3,8 +3,10 @@
 [![License](https://img.shields.io/badge/license-GNU%20GPLv3-orange.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 [![Twitter](https://img.shields.io/badge/twitter-%40ML_Burn-blue.svg)](https://twitter.com/ML_Burn)
 
-# Entss: Entailment Classification and Semantic Scaling
- 
+# Entss: Entailment Classification and Semantic Scaling ![ents2](https://github.com/MLBurnham/entss/assets/41241150/4df264de-89f7-4528-8eed-c811a8f69cb6)
+
+
+
 Entss is a library for inferring political beliefs from text using transformers and Bayesian IRT. It provides tools to simplify the process of cleaning, labeling, and modeling your data so that you don't have to be an expert in NLP or Bayesian statistics, and can save you a lot of programming even if you are!
 
 Under the hood, Entss uses zero-shot stance detection via entailment classification to label documents based on the beliefs they express, and estimates the ideology of document authors with semantic scaling. 
