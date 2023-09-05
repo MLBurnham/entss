@@ -261,19 +261,6 @@ df.head()
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
 <thead>
 <tr style="text-align: right;">
@@ -372,7 +359,9 @@ You can pass a dataframe to the modeler, or if you have data already formatted f
 ```python
 banks = en.Scaler()
 
-fit, summary = banks.stan_fit(df, targets = targets, dimensions = ['supports', 'opposes'], left_init_cols = 'trump_opposes', right_init_cols = 'trump_supports', summary = True)
+fit, summary = banks.stan_fit(df, targets = targets, dimensions = ['supports', 'opposes'], 
+                              left_init_cols = 'trump_opposes', right_init_cols = 'trump_supports', 
+                              summary = True)
 ```
 stan_fit() will output a stan fit model object you can use to evaluate the model and extract ideal point estimates. If summary = True it will also return a dataframe of parameter estimates, standard deviations, and R-hats.
 
