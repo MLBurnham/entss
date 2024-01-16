@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 # Package metadata
 NAME = 'entss'
-VERSION = '0.0.1'
+VERSION = '0.1.0'
 DESCRIPTION = 'Entailment Classification and Semantic Scaling'
 URL = 'https://github.com/MLBurnham/entss'
 AUTHOR = 'Michael Burnham'
@@ -38,7 +38,7 @@ setup(
     packages=find_packages(),
     install_requires=INSTALL_REQUIRES,
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
         'Programming Language :: Python :: 3'

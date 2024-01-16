@@ -242,7 +242,7 @@ def generate_hypoth(targets, dimensions):
     return result_dict
 
 
-def stanify(data, targets, dimensions, grainsize = None, output_dir = None):
+def stanify(data, targets, dimensions, groupids = None, grainsize = None, output_dir = None):
     """
     Convert a DataFrame into a format suitable for Stan heirarchical modeling.
     
@@ -258,6 +258,12 @@ def stanify(data, targets, dimensions, grainsize = None, output_dir = None):
         A list of the dimensions along which you wish to scale and are represented in your dataframe. 
         You may pass entire column names or a list of suffixes and all columns with those suffixes will be used. 
         For example, a list of ["support", "oppose"] will use all columns ending in "support" or "oppose".
+
+    groupsids: string
+        The name of the column that identifies each row with a group, if one is present.
+
+    groups: int
+        The number of groups in the data
 
     output_dir : If defined will export the data as a JSON to the specified directory
 
@@ -296,8 +302,15 @@ def stanify(data, targets, dimensions, grainsize = None, output_dir = None):
     X = data[x_cols].sum(axis = 1)
     # flatten for Stan
     X = np.tile(X, K)
+    if groupids is None:
+        groupids = np.repeat(1, J)
+    else:
+        groupids = data[groupids]
+
+    groups = len(set(groupids))
+
     # Convert to a dictionary
-    stan_data = dict(y=y, J = J, K = K, N = N, jj = jj, kk = kk, X = X)
+    stan_data = dict(y=y, J = J, K = K, N = N, jj = jj, kk = kk, X = X, gg = groupids, G = groups)
     
     if grainsize:
         stan_data['grainsize'] = grainsize
@@ -335,7 +348,7 @@ def generate_inits(data, left_cols, right_cols, alphas = None):
     right_sum = data[right_cols].sum(axis=1)
     left_sum = data[left_cols].sum(axis=1)
 
-    theta_inits = [1 if rs > ls else -1 for rs, ls in zip(right_sum, left_sum)]
+    theta_inits = [1 if rs > ls else -1 if ls > rs else 0 for rs, ls in zip(right_sum, left_sum)]
     inits = dict(theta = theta_inits)
     
     if alphas:
