@@ -15,7 +15,7 @@ Under the hood, Entss uses zero-shot stance detection via entailment classificat
 Entss is a modular package designed around three classes, the Cleaner(), Classifier(), and Scaler(). Sensible defaults are provided for each class to enable fast inference, but users can also pass their own cleaning functions, models, etc. to the classes.
 
 ## Installation
-Entss relies on PyTorch to label documents and CmdStan to estimate ideal points. It's highly recommended that you set these up in a conda environment to use Entss. If you want to use the Scaler() you will need an install of CmdStan. The [installation instructions for CmdStanPy](https://mc-stan.org/cmdstanpy/installation.html) recommend installing CmdStanPy with Conda, which will automatically install CmdStan. For example, the following command will create a new environment called 'entss' with CmdStanPy and CmdStan installed. 
+Entss relies on PyTorch to label documents and CmdStan to estimate ideal points. It's highly recommended that you set these up in a conda environment to use Entss (and I highly recommend the Mamba version of Conda). If you want to use the Scaler() you will need an install of CmdStan. The [installation instructions for CmdStanPy](https://mc-stan.org/cmdstanpy/installation.html) recommend installing CmdStanPy with Conda/Mamba, which will automatically install CmdStan. For example, the following command will create a new environment called 'entss' with CmdStanPy and CmdStan installed. 
 
 ```bash
 conda create -n entss -c conda-forge cmdstanpy
