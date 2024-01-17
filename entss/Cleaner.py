@@ -6,17 +6,27 @@ class Cleaner:
 
     Args:
         text_scrubber (function, optional): A function for scrubbing text. If None the default scrubber will be used.
-        sent_splitter (function, optional): A function for splitting text into sentences. If none PySBD will be used.
-        synonym_dict (dict, optional): A dictionary containing synonym replacements. Default is None.
-        keywords (list, optional): A list of keywords to tag documents containing those words.
+        
+	sent_splitter (function, optional): A function for splitting text into sentences. If none PySBD will be used.
+        
+	synonym_dict (dict, optional): A dictionary where keys are synonyms to be replaced and values are 
+	corresponding replacements. Values can be either strings or lists of strings. 
+	Regular expressions can also be passed. Default is None.
+        
+	keywords (list, optional): A list of keywords to tag documents containing those words.
 
     Attributes:
         sent_splitter (function): The function for sentence splitting.
-        text_scrubber (function): The function for text scrubbing.
-        synonym_replacer (function): The function for synonym replacement.
-        synonym_dict (dict): The dictionary containing synonym replacements.
-        keyword_tagger (function): The function for tagging documents that contain keywords.
-        keywords (list): The list of keywords passed to the keyword_tagger
+        
+	text_scrubber (function): The function for text scrubbing.
+        
+	synonym_replacer (function): The function for synonym replacement.
+        
+	synonym_dict (dict): The dictionary containing synonym replacements.
+        
+	keyword_tagger (function): The function for tagging documents that contain keywords.
+        
+	keywords (list): The list of keywords passed to the keyword_tagger
 
     Methods:
         clean(docs, textcol='text'): Cleans and preprocesses input text data.
@@ -46,9 +56,18 @@ class Cleaner:
         Cleans and preprocesses input text data.
 
         Args:
-            docs (str, list, or pandas DataFrame): A string, list of strings, or DataFrame containing text to be cleaned.
-            textcol (str, optional): The column containing text to be processed if passing a DataFrame. 
-                This column will be replaced by the processed text.
+        docs (str, list, or pandas DataFrame): A string, list of strings, or DataFrame containing text to be cleaned.
+        
+	textcol (str, optional): The column containing text to be processed if passing a DataFrame. 
+        This column will be replaced by the processed text.
+
+	scrub (bool): Whether or not to apply the scrubbing function. Default True.
+
+	split (bool): Whether or not to apply sentence splitting. Default True.
+
+	synonyms (bool): Whether or not to use the synonym dicitonary to replace synonyms. Default False.
+
+	keywords (bool): Tag documents for whether or not they contain a keyword. Default True.
 
         Returns:
             pandas DataFrame or list: Processed and cleaned text data.
