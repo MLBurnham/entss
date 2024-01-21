@@ -84,7 +84,7 @@ class Cleaner:
         # Tag keywords
         if keywords:
 	    # make sure all docs are still strings after splitting
-	    docs[textcol] = docs[textcol].astype(str)
+	        docs[textcol] = docs[textcol].astype(str)
             docs = self.keyword_tagger(docs, textcol = textcol, keywords = self.keyword_list)
 
         return docs
