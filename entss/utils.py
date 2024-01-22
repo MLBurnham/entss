@@ -112,7 +112,7 @@ def synonym_replacer(docs, synonym_dict, case_sensitive=False, textcol = 'text')
     Args:
         docs (str, list of str, or DataFrame): The input text, list of texts, or dataframe where synonyms should be replaced. If passing a dataframe textcol sould be specified.
 
-        synonyms_dict (dict): A dictionary where keys are synonyms to be replaced and values are corresponding replacements.
+        synonyms_dict (dict): A dictionary where keys are words and values are synonyms that will replace them.
             Values can be either strings or lists of strings. Regular expressions can also be passed.
 
         case_sensitive (bool, optional): Determines whether the replacement is case sensitive (default is True).
@@ -134,18 +134,17 @@ def synonym_replacer(docs, synonym_dict, case_sensitive=False, textcol = 'text')
         text = docs
     
     replaced_texts = []
+    flags = re.IGNORECASE if not case_sensitive else 0
+    # Create a regex pattern for identifying words in the text
+    pattern = re.compile(r'(?:\b|(?<=\W))' + '|'.join(re.escape(key) for key in synonym_dict.keys()) + r'(?:\b|(?=\W))', flags = flags)
+    # function to replace matches with synonyms
+    def replace(match):
+        return synonym_dict[match.group(0)]
+    
     for t in text:
         replaced_text = t
-        flags = re.IGNORECASE if not case_sensitive else 0
-
-        # Create a regex pattern for identifying words in the text
-        pattern = re.compile(r'\b(' + '|'.join(re.escape(word) for word_list in synonym_dict.values() for word in word_list) + r')\b', flags=flags)
-
         # Replace words in the text using the regex pattern
-        replaced_text = pattern.sub(
-            lambda x: next((key for key, word_list in synonym_dict.items() if any(re.search(x.group(), word, flags=flags) for word in word_list)), x.group()),
-            replaced_text
-        )
+        replaced_text = pattern.sub(replace, t)
         replaced_texts.append(replaced_text)
 
     if len(replaced_texts) == 1:
