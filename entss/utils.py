@@ -164,7 +164,7 @@ def tag_keywords(docs, keywords, textcol = 'text'):
 
     Args:
         texts (list or pandas DataFrame): List of texts to search for keywords or a DataFrame containing the text.
-        keywords (list): List of keywords to search for.
+        keywords (list): List of keywords to search for. Accepts regular expressions.
         textcol (str, optional): Name of the column containing text if a DataFrame is provided. Default is 'text'.
 
     Returns:

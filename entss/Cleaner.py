@@ -26,7 +26,7 @@ class Cleaner:
         
 	keyword_tagger (function): The function for tagging documents that contain keywords.
         
-	keywords (list): The list of keywords passed to the keyword_tagger
+	keywords (list): The list of keywords passed to the keyword_tagger. Accepts regular exrpessions.
 
     Methods:
         clean(docs, textcol='text'): Cleans and preprocesses input text data.
