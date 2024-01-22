@@ -113,9 +113,10 @@ def synonym_replacer(docs, synonym_dict, case_sensitive=False, textcol = 'text')
         docs (str, list of str, or DataFrame): The input text, list of texts, or dataframe where synonyms should be replaced. If passing a dataframe textcol sould be specified.
 
         synonyms_dict (dict): A dictionary where keys are words and values are synonyms that will replace them.
-            Values can be either strings or lists of strings. Regular expressions can also be passed.
+        Values can be either strings or lists of strings. Regular expressions can also be passed.
 
-        case_sensitive (bool, optional): Determines whether the replacement is case sensitive (default is True).
+        case_sensitive (bool, optional): Determines whether the replacement is case sensitive (default is True). 
+        If using case insensitive matching your synonym dictionary should contain all case variations you want to replace.
 
     Returns:
         str or list: The input text(s) with synonyms replaced according to the provided dictionary.
