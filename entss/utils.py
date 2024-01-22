@@ -110,9 +110,11 @@ def synonym_replacer(docs, synonym_dict, case_sensitive=False, textcol = 'text')
     Replace synonyms in a given text or list of texts based on a dictionary.
 
     Args:
-        text (str, list of str, or DataFrame): The input text or list of texts where synonyms should be replaced.
+        docs (str, list of str, or DataFrame): The input text, list of texts, or dataframe where synonyms should be replaced. If passing a dataframe textcol sould be specified.
+
         synonyms_dict (dict): A dictionary where keys are synonyms to be replaced and values are corresponding replacements.
             Values can be either strings or lists of strings. Regular expressions can also be passed.
+
         case_sensitive (bool, optional): Determines whether the replacement is case sensitive (default is True).
 
     Returns:
@@ -122,7 +124,7 @@ def synonym_replacer(docs, synonym_dict, case_sensitive=False, textcol = 'text')
     if not isinstance(synonym_dict, dict):
         raise ValueError("synonym_dict must be a dictionary to replace synonyms")
     if isinstance(docs, str):
-        text = list(text)
+        text = [docs]
     elif isinstance(docs, pd.DataFrame):
         if textcol not in docs.columns:
             raise ValueError(f"'{textcol}' column not found. If you are passing a DataFrame make sure to specify the name of the text column if it is not 'text'")
