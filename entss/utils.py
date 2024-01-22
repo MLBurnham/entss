@@ -122,7 +122,7 @@ def synonym_replacer(docs, synonym_dict, case_sensitive=False, textcol = 'text')
     if not isinstance(synonym_dict, dict):
         raise ValueError("synonym_dict must be a dictionary to replace synonyms")
     if isinstance(docs, str):
-        text = [text]
+        text = list(text)
     elif isinstance(docs, pd.DataFrame):
         if textcol not in docs.columns:
             raise ValueError(f"'{textcol}' column not found. If you are passing a DataFrame make sure to specify the name of the text column if it is not 'text'")
