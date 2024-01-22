@@ -137,7 +137,7 @@ def synonym_replacer(docs, synonym_dict, case_sensitive=False, textcol = 'text')
     replaced_texts = []
     flags = re.IGNORECASE if not case_sensitive else 0
     # Create a regex pattern for identifying words in the text. '(?:\b|(?<=\W))' identifies word boundaries as nonword characters.
-    pattern = re.compile(r'(?:\b|(?<=\W))' + r'(?:\b|(?=\W))|(?:\b|(?<=\W))'.join(re.escape(key) for key in synonyms.keys()) + r'(?:\b|(?=\W))', flags = flags)
+    pattern = re.compile(r'(?:\b|(?<=\W))' + r'(?:\b|(?=\W))|(?:\b|(?<=\W))'.join(re.escape(key) for key in synonym_dict.keys()) + r'(?:\b|(?=\W))', flags = flags)
     # function to replace matches with synonyms
     def replace(match):
         return synonym_dict[match.group(0)]
