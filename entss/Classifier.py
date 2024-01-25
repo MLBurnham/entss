@@ -47,10 +47,10 @@ class Classifier:
             self.device = device
         elif torch.cuda.is_available():
             print("GPU found, using GPU to classify text.")
-            torch.device("cuda:0")
+            self.device = torch.device("cuda:0")
         else:
             print("No GPU found, using CPU to classify text.")
-            torch.device("cpu")
+            self.device = torch.device("cpu")
 
         # if targets were passed but a hypothesis dictionary was not passed, generate a hypothesis dictionary
         if targets is not None and hypoth is None:
