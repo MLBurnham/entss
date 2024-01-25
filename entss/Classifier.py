@@ -35,14 +35,22 @@ class Classifier:
                  dimensions = ["supports", "opposes", "is neutral towards"],
                  template = "The author of this text {{dimension}} {{target}}"):
         self.model_name = model_name
-        # if no device was specified, check if GPU is available. Use CPU otherwise
-        self.device = device or torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         self.batch_size = batch_size
         self.classifier = classifier
         self.hypoth = hypoth
         self.targets = targets
         self.dimensions = dimensions        
         self.template = template
+
+        # if no device was specified, check if GPU is available. Use CPU otherwise
+        if device is not None:
+            self.device = device
+        elif torch.cuda.is_available():
+            print("GPU found, using GPU to classify text.")
+            torch.device("cuda:0")
+        else:
+            print("No GPU found, using CPU to classify text.")
+            torch.device("cpu")
 
         # if targets were passed but a hypothesis dictionary was not passed, generate a hypothesis dictionary
         if targets is not None and hypoth is None:
