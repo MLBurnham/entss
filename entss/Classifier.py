@@ -60,8 +60,7 @@ class Classifier:
         if classifier is None:
             self.classifier = pipeline("zero-shot-classification", 
                                         model = self.model_name, 
-                                        device = self.device, 
-                                        batch_size = self.batch_size
+                                        device = self.device
                                        )
     def generate_hypoth(self, targets = None, dimensions = None, assign = True):
         """
@@ -135,7 +134,7 @@ class Classifier:
                 text = tempdf[textcol]
 
             # Use classifier to get predictions
-            res = self.classifier(list(text), labels, hypothesis_template=filled_template, multi_label=False)
+            res = self.classifier(list(text), labels, hypothesis_template=filled_template, multi_label=False, batch_size = self.batch_size)
             self.classifier.call_count = 0 # prevents warnings
 
             # Add results to dataframe
