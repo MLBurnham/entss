@@ -88,7 +88,7 @@ class Scaler:
             
             output_dir (str, optional): The directory for storing Stan data. Defaults to 'stan_data.json'.
             
-            summary (bool, optional): Whether to generate a summary of the fit. Defaults to True.
+            summary (bool, optional): Whether to generate a summary of the fit object. Defaults to True.
             **kwargs: Additional keyword arguments for CmdStanModel.sample().
 
         Returns:
@@ -141,6 +141,11 @@ class Scaler:
                                       jacobian = True,
                                       **kwargs
                                       )
+            if summary:
+                summary = {'theta': fit.theta, 'alpha': fit.alpha, 'delta': fit.delta}
+                return fit, summary
+            else: 
+                return fit
         else:
             fit = self.model.sample(data = data, 
                                     inits = inits,
@@ -151,7 +156,8 @@ class Scaler:
                                     threads_per_chain = self.n_threads,
                                     **kwargs
                                 )
-        if summary:
-            summary = fit.summary()
-            return fit, summary
-        return fit
+            if summary:
+                summary = fit.summary()
+                return fit, summary
+            else:
+                return fit
