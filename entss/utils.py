@@ -285,8 +285,9 @@ def stanify(data, targets, dimensions, groupids = None, grainsize = None, output
     stan_data = stanify(df, targets, dimensions)
 
     """
-    # Get counts of documents classified for each dimension
+    # Get counts of documents classified for each dimension and target
     y_cols = [col for col in data.columns if any(col.endswith(word) for word in dimensions)]
+    y_cols = [col for col in y_cols if any(target in col for target in targets)]
     y = data[y_cols]
     # Number of rows, items and observations in the data
     J = y.shape[0] #j rows
