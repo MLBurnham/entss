@@ -286,7 +286,12 @@ def stanify(data, targets, dimensions, groupids = None, grainsize = None, output
 
     """
     # Get counts of documents classified for each dimension and target
-    y_cols = [col for col in data.columns if any(col.endswith(word) for word in dimensions)]
+    y_cols = []
+    # iterate through the dimensions so that columns for each dimension are all together.
+    # this simplifies the tiling for the X counts below.
+    for dimension in dimensions:
+        y_cols.extend([col for col in data.columns if col.endswith(dimension)])
+    # drop columns that are not related to the specified targets
     y_cols = [col for col in y_cols if any(target in col for target in targets)]
     y = data[y_cols]
     # Number of rows, items and observations in the data
