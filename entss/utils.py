@@ -302,9 +302,9 @@ def stanify(data, targets, dimensions, groupids = None, grainsize = None, output
     
     # get counts of total relevant documents for each observation
     x_cols = [col for col in data.columns if any(col.endswith(word) for word in targets)]
-    X = data[x_cols].sum(axis = 1)
+    X = data[x_cols].to_numpy().flatten(order = 'F')
     # flatten for Stan
-    X = np.tile(X, K)
+    X = np.tile(X, len(dimensions))
     if groupids is None:
         groupids = np.repeat(1, J)
     else:
