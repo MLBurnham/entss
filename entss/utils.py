@@ -320,7 +320,7 @@ def stanify(data, targets, dimensions, groupids = None, grainsize = None, output
         # flatten for Stan
         X = data[x_cols].to_numpy().flatten(order = 'F')
         X = np.tile(X, len(dimensions))
-    elif total_count in counts.columns:
+    elif total_count in data.columns:
         X = np.tile(data[total_count], K)
     else:
         raise ValueError(f"total_count must be 'all', 'item', or the name of a column in the dataframe.")
