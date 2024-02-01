@@ -60,7 +60,7 @@ class Scaler:
                  n_warmup = 1000,
                  n_sample = 2000,
                  output_dir = 'stan_data.json',
-                 total_count = 'item'
+                 total_count = 'item',
                  summary = True,
                  **kwargs):
         """
