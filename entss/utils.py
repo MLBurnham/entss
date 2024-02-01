@@ -312,7 +312,7 @@ def stanify(data, targets, dimensions, groupids = None, grainsize = None, output
     kk = np.repeat(np.arange(1, K + 1), J) # item for the row
     
     if total_count == 'all':
-        X = data[[targets]].sum(axis = 1)
+        X = data[targets].sum(axis = 1)
         X = np.tile(X, K)
     elif total_count == 'item':
         # get counts of total relevant documents for each observation
