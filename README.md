@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](https://github.com/your-username/entss)
+[![Version](https://img.shields.io/badge/version-0.1.1-blue.svg)](https://github.com/your-username/entss)
 [![Language](https://img.shields.io/badge/language-Python-green.svg)](https://www.python.org/)
 [![License](https://img.shields.io/badge/license-GNU%20GPLv3-orange.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 [![Twitter](https://img.shields.io/badge/twitter-%40ML_Burn-blue.svg)](https://twitter.com/ML_Burn)

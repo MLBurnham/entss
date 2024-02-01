@@ -244,7 +244,7 @@ def generate_hypoth(targets, dimensions):
     return result_dict
 
 
-def stanify(data, targets, dimensions, groupids = None, grainsize = None, output_dir = None):
+def stanify(data, targets, dimensions, groupids = None, grainsize = None, output_dir = None, total_count = 'item'):
     """
     Convert a DataFrame into a format suitable for Stan heirarchical modeling.
     
@@ -267,7 +267,13 @@ def stanify(data, targets, dimensions, groupids = None, grainsize = None, output
     groups: int
         The number of groups in the data
 
-    output_dir : If defined will export the data as a JSON to the specified directory
+    output_dir: If defined will export the data as a JSON to the specified directory
+
+    total_count: str
+        How the total counts should be determined. If 'all', it will be the total count of all documents across items.
+        if item, it will be the total documents per item. If the name of a column, the values in that column will be used. Using 'item'
+        assumes each item has equal weight in determining ideology while 'all' assumes that the topics individuals choose to engage with
+        has ideological significance. In general, 'item' performs better for a holistic measurement of ideology and will converge faster.
 
     Returns:
     --------
@@ -305,11 +311,20 @@ def stanify(data, targets, dimensions, groupids = None, grainsize = None, output
     jj = np.tile(np.arange(1,J+1),K) #row for the item
     kk = np.repeat(np.arange(1, K + 1), J) # item for the row
     
-    # get counts of total relevant documents for each observation
-    x_cols = [col for col in data.columns if any(col.endswith(word) for word in targets)]
-    X = data[x_cols].to_numpy().flatten(order = 'F')
-    # flatten for Stan
-    X = np.tile(X, len(dimensions))
+    if total_count == 'all':
+        X = data[[targets]].sum(axis = 1)
+        X = np.tile(X, K)
+    elif total_count == 'item':
+        # get counts of total relevant documents for each observation
+        x_cols = [col for col in data.columns if any(col.endswith(word) for word in targets)]
+        # flatten for Stan
+        X = data[x_cols].to_numpy().flatten(order = 'F')
+        X = np.tile(X, len(dimensions))
+    elif total_count in counts.columns:
+        X = np.tile(data[total_count], K)
+    else:
+        raise ValueError(f"total_count must be 'all', 'item', or the name of a column in the dataframe.")
+
     if groupids is None:
         groupids = np.repeat(1, J)
     else:

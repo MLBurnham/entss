@@ -60,6 +60,7 @@ class Scaler:
                  n_warmup = 1000,
                  n_sample = 2000,
                  output_dir = 'stan_data.json',
+                 total_count = 'item'
                  summary = True,
                  **kwargs):
         """
@@ -129,9 +130,9 @@ class Scaler:
                 
             # convert df to a dictionary and export as a json
             if self.model_type == 'multi':
-                utils.stanify(data = data, targets = targets, dimensions = dimensions, groupids = groupids, grainsize = grainsize, output_dir = output_dir)            
+                utils.stanify(data = data, targets = targets, dimensions = dimensions, groupids = groupids, grainsize = grainsize, output_dir = output_dir, total_count = total_count)            
             else:
-                utils.stanify(data = data, targets = targets, dimensions = dimensions, groupids = groupids, output_dir = output_dir)            
+                utils.stanify(data = data, targets = targets, dimensions = dimensions, groupids = groupids, output_dir = output_dir, total_count = total_count)            
 
             data = output_dir
         
