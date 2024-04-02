@@ -104,6 +104,9 @@ class Classifier:
         template = template.replace('{{dimension}}', '{}')
         # extract list of targets from the hypotheses
         targets = list(hypoth.keys())
+        # create flag for multilabel classification to differentiate label handeling for binary and multilabel cases
+        if self.dimensions > 1: 
+            multilabel = True
 
         # Processing if a list like was passed, convert to a df
         if isinstance(data, (list, pd.Series, np.ndarray)):
@@ -123,7 +126,7 @@ class Classifier:
         # loop through each target, populating the template and classifying relevant documents
         for target in tqdm(targets, desc="Classifying text"):
             filled_template = template.replace("{{target}}", target)
-            labels = hypoth[target]
+            candidate_labels = hypoth[target]
 
             # Filter rows where the target is true if a dataframe with labels was passed
             if isinstance(data, pd.DataFrame):
@@ -134,33 +137,47 @@ class Classifier:
                 text = tempdf[textcol]
 
             # Use classifier to get predictions
-            res = self.classifier(list(text), labels, hypothesis_template=filled_template, multi_label=False, batch_size = self.batch_size)
+            res = self.classifier(list(text), candidate_labels, hypothesis_template=filled_template, multi_label=False, batch_size = self.batch_size)
             self.classifier.call_count = 0 # prevents warnings
 
-            # Add results to dataframe
-            if isinstance(data, pd.DataFrame):
-                # Need to cast the column as an object first to avoid a warning
-                tempdf[f"{target}_lab"] = np.NaN
-                tempdf[f"{target}_lab"] = tempdf[f"{target}_lab"].astype('object')         
-                
-                tempdf.loc[target_rows, f"{target}_lab"] = [label['labels'][0] for label in res]
-            else:
-                tempdf[f"{target}_lab"] = [label['labels'][0] for label in res]
+            # extract labels from the results
+            # if using multi-label classification extract the most likely candidate label
+            if multilabel: 
+                labels = [label['labels'][0] for label in res]
+                 # Add results to dataframe
+                if isinstance(data, pd.DataFrame):
+                    # Need to cast the column as an object first to avoid a warning
+                    tempdf[f"{target}_lab"] = np.NaN
+                    tempdf[f"{target}_lab"] = tempdf[f"{target}_lab"].astype('object')         
+                    
+                    tempdf.loc[target_rows, f"{target}_lab"] = labels
+                else:
+                    tempdf[f"{target}_lab"] = labels
+                # Convert to one-hot encoding
+                dums = pd.get_dummies(tempdf[f"{target}_lab"], prefix=target, dtype=float)
+                # get_dummies() won't create a column if none of a label was found.
+                # Check to see if all columns are present and if not, 
+                # add a column of zeros to indicate that the label does not appear in the data.
+                for label in labels:
+                    if f"{target}_{label}" not in dums:
+                        dums[f"{target}_{label}"] = 0
+                label_dfs.append(dums)
+            # if using binary entialment classification extract label
+            else:                
+                # if probability of entailment > 0.5, return 1, else 0
+                labels = [1 if label['scores'][0] > 0.5 else 0 for label in res]
+                # convert labels to a series and append to list of results
+                labels = pd.Series(labels, name = {target}_{self.dimensions[0]})
+                label_dfs.append(labels)
 
-            # Convert to one-hot encoding
-            dums = pd.get_dummies(tempdf[f"{target}_lab"], prefix=target, dtype=float)
-            # get_dummies() won't create a column if none of a label was found.
-            # Check to see if all columns are present and if not, add a column of zeros.
-            for label in labels:
-                if f"{target}_{label}" not in dums:
-                    dums[f"{target}_{label}"] = 0
-            label_dfs.append(dums)
-
-        # Concatenate one-hot encoded labels
+        # Concatenate labels into a single df
         label_df_concat = pd.concat(label_dfs, axis=1)
 
         # Add labels to df and drop original label columns
-        tempdf = pd.concat([tempdf, label_df_concat], axis=1).drop([f"{target}_lab" for target in targets], axis=1)
+        tempdf = pd.concat([tempdf, label_df_concat], axis=1)
+        # if multiple labels, drop the original label columns
+        if multilabel:
+            tempdf.drop([f"{target}_lab" for target in targets], axis=1)
 
         if aggregate_on is not None:
             count = tempdf.groupby(aggregate_on).size().reset_index(name='Count')['Count']
