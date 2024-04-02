@@ -106,7 +106,7 @@ class Classifier:
         targets = list(hypoth.keys())
         # create flag for multilabel classification to differentiate label handeling for binary and multilabel cases
         if len(self.dimensions) > 1: 
-            multilabel = True
+            self.multilabel = True
 
         # Processing if a list like was passed, convert to a df
         if isinstance(data, (list, pd.Series, np.ndarray)):
@@ -142,7 +142,7 @@ class Classifier:
 
             # extract labels from the results
             # if using multi-label classification extract the most likely candidate label
-            if multilabel: 
+            if self.multilabel: 
                 labels = [label['labels'][0] for label in res]
                  # Add results to dataframe
                 if isinstance(data, pd.DataFrame):
@@ -176,7 +176,7 @@ class Classifier:
         # Add labels to df and drop original label columns
         tempdf = pd.concat([tempdf, label_df_concat], axis=1)
         # if multiple labels, drop the original label columns
-        if multilabel:
+        if self.multilabel:
             tempdf.drop([f"{target}_lab" for target in targets], axis=1)
 
         if aggregate_on is not None:
