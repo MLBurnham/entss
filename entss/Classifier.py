@@ -169,6 +169,8 @@ class Classifier:
 
         # Concatenate labels into a single df
         label_df_concat = pd.concat(label_dfs, axis=1)
+        # fill NaN values with 0
+        label_df_concat.fillna(value = 0, inplace = True)
 
         # Add labels to df and drop original label columns
         tempdf = pd.concat([tempdf, label_df_concat], axis=1)
