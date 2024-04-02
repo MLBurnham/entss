@@ -167,7 +167,7 @@ class Classifier:
                 # if probability of entailment > 0.5, return 1, else 0
                 labels = [1 if label['scores'][0] > 0.5 else 0 for label in res]
                 # convert labels to a series and append to list of results
-                labels = pd.Series(labels, name = {target}_{self.dimensions[0]})
+                labels = pd.Series(labels, name = f"{target}_{self.dimensions[0]}")
                 label_dfs.append(labels)
 
         # Concatenate labels into a single df
