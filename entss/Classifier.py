@@ -105,7 +105,7 @@ class Classifier:
         # extract list of targets from the hypotheses
         targets = list(hypoth.keys())
         # create flag for multilabel classification to differentiate label handeling for binary and multilabel cases
-        if self.dimensions > 1: 
+        if len(self.dimensions) > 1: 
             multilabel = True
 
         # Processing if a list like was passed, convert to a df
