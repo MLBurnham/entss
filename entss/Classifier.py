@@ -163,23 +163,26 @@ class Classifier:
             else:                
                 # if probability of entailment > 0.5, return 1, else 0
                 labels = [1 if label['scores'][0] > 0.5 else 0 for label in res]
-                # convert labels to a series and append to list of results
-                labels = pd.Series(labels, name = f"{target}_{self.dimensions[0]}")
-                label_dfs.append(labels)
+                # instantiate the column for the new labels as an object to avoid a warning
+                tempdf[f"{target}_{self.dimensions[0]}"] = np.NaN
+                tempdf[f"{target}_{self.dimensions[0]}"] = tempdf[f"{target}_{self.dimensions[0]}"].astype('object')         
+                # pass labels to the dataframe
+                tempdf.loc[target_rows, f"{target}_{self.dimensions[0]}"] = labels
 
-        # Concatenate labels into a single df
-        label_df_concat = pd.concat(label_dfs, axis=1)
-        # fill NaN values with 0
-        label_df_concat.fillna(value = 0, inplace = True)
-
-        # Add labels to df and drop original label columns
-        tempdf = pd.concat([tempdf, label_df_concat], axis=1)
-        # if multiple labels, drop the original label columns
+        # if multiple labels, add the dummy variable dfs created to temp df
         if len(self.dimensions) > 1:
+            # Concatenate dummy labels into a single df
+            label_df_concat = pd.concat(label_dfs, axis=1)
+            # Add labels to tempdf and drop original label columns
+            tempdf = pd.concat([tempdf, label_df_concat], axis=1)
             tempdf.drop([f"{target}_lab" for target in targets], axis=1)
+        
+        # fill NaN values with 0
+        tempdf.fillna(value = 0, inplace = True)
 
         if aggregate_on is not None:
             count = tempdf.groupby(aggregate_on).size().reset_index(name='Count')['Count']
             tempdf = tempdf.drop(textcol, axis = 1).groupby(aggregate_on).sum().reset_index()
             tempdf['doc_num'] = count
+        
         return tempdf
